@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const userRouter=require("./router/userRouter")
 const dotenv = require("dotenv");
+const cors=require("cors")
 dotenv.config();
 const DB = require("./connect/db");
 DB();
 app.use(express.json())
+app.use(cors())
 
 
 
