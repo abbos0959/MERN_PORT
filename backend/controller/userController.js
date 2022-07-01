@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user");
 
 const signup = async (req, res) => {
-   const { email, password, name } = req.body;
+   const { email, password, lastname,firstname } = req.body;
    try {
       const OldUser = await User.findOne({ email });
       if (OldUser) {
@@ -13,7 +13,7 @@ const signup = async (req, res) => {
       const result = await User.create({
          email,
          password: Hashpassword,
-         name,
+         name:`${firstname} ${lastname}`
       });
       const token = jwt.sign({ id: result._id }, "secret", { expiresIn: "1d" });
       res.status(200).json({
