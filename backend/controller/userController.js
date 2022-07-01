@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user");
 
 const signup = async (req, res) => {
-   const { email, password, lastname,firstname } = req.body;
+   const { email, password, lastname, firstname } = req.body;
    try {
       const OldUser = await User.findOne({ email });
       if (OldUser) {
@@ -13,7 +13,7 @@ const signup = async (req, res) => {
       const result = await User.create({
          email,
          password: Hashpassword,
-         name:`${firstname} ${lastname}`
+         name: `${firstname} ${lastname}`,
       });
       const token = jwt.sign({ id: result._id }, "secret", { expiresIn: "1d" });
       res.status(200).json({
@@ -41,13 +41,13 @@ const login = async (req, res) => {
       if (!ComparePassword) {
          return res.status(500).json({ message: "bunday user mavjud emas" });
       }
-      const token=jwt.sign({id:USERBORMI._id},"secret",{expiresIn:"1h"})
+      const token = jwt.sign({ id: USERBORMI._id }, "secret", { expiresIn: "1h" });
 
       res.status(200).json({
-        message:"success",
-        USERBORMI,
-        token
-      })
+         message: "success",
+         USERBORMI,
+         token,
+      });
    } catch (error) {
       res.status(500).json({
          message: error.message,
@@ -55,4 +55,27 @@ const login = async (req, res) => {
       });
    }
 };
-module.exports = { signup,login };
+
+const GoogleSign = async (req, res) => {
+   const { email, name, token, googleId } = req.body;
+
+   try {
+      const oldUser = await User.findOne({ email });
+      if (oldUser) {
+         const result = { _id: oldUser._id.toString(), email, name };
+         return res.status(200).json({ result, token });
+      }
+      const result = await User.create({
+         email,
+         name,
+         googleId,
+      });
+      res.status(200).json({ result, token });
+   } catch (error) {
+      res.status(500).json({
+         message: error.message,
+         status: "googleid error",
+      });
+   }
+};
+module.exports = { signup, login, GoogleSign };
