@@ -1,6 +1,6 @@
 const Tour=require("../model/tourmodel")
 
-const createTour=(req,res)=>{
+const createTour= async(req,res)=>{
     const tour=req.body
     const newTour=new Tour({
         ...tour,
@@ -18,7 +18,7 @@ const createTour=(req,res)=>{
     }
 }
 
-const getTours=(req,res)=>{
+const getTours= async(req,res)=>{
 
     try {
         const tourlar=await Tour.find()
