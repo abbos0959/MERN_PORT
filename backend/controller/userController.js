@@ -32,20 +32,20 @@ const login = async (req, res) => {
    const { email, password } = req.body;
 
    try {
-      const USERBORMI = await User.findOne({ email });
-      if (!USERBORMI) {
+      const result = await User.findOne({ email });
+      if (!result) {
          return res.status(500).json({ message: "bunday user mavjud emas" });
       }
 
-      const ComparePassword = await bcrypt.compare(password, USERBORMI.password);
+      const ComparePassword = await bcrypt.compare(password, result.password);
       if (!ComparePassword) {
          return res.status(500).json({ message: "bunday user mavjud emas" });
       }
-      const token = jwt.sign({ id: USERBORMI._id }, "secret", { expiresIn: "1h" });
+      const token = jwt.sign({ id: result._id }, "secret", { expiresIn: "1h" });
 
       res.status(200).json({
          message: "success",
-         USERBORMI,
+         result,
          token,
       });
    } catch (error) {
