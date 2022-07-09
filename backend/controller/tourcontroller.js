@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Tour = require("../model/tourmodel");
 
 const createTour = async (req, res) => {
@@ -43,4 +44,17 @@ const getTourById = async (req, res) => {
       });
    }
 };
-module.exports = { getTours, createTour ,getTourById};
+
+const getTourByUser=(req,res)=>{
+    const {id}=req.params.id
+    try {
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({message:"foydalanuvchi mavjud emas"})
+        }
+        const Userlar=await Tour.find({creator:id})
+        res.status(200).json(Userlar)
+    } catch (error) {
+        
+    }
+}
+module.exports = { getTours, createTour ,getTourById,getTourByUser};
