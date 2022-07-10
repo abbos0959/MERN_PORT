@@ -45,7 +45,7 @@ const getTourById = async (req, res) => {
    }
 };
 
-const getTourByUser=(req,res)=>{
+const getTourByUser= async(req,res)=>{
     const {id}=req.params.id
     try {
         if(!mongoose.Types.ObjectId.isValid(id)){
