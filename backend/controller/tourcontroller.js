@@ -46,7 +46,7 @@ const getTourById = async (req, res) => {
 };
 
 const getTourByUser= async(req,res)=>{
-    const {id}=req.params.id
+    const {id}=req.params
     try {
         if(!mongoose.Types.ObjectId.isValid(id)){
             return res.status(404).json({message:"foydalanuvchi mavjud emas"})
@@ -54,6 +54,9 @@ const getTourByUser= async(req,res)=>{
         const Userlar=await Tour.find({creator:id})
         res.status(200).json(Userlar)
     } catch (error) {
+        res.status(404).json({
+            message:"getTourbyUser hatosi"
+        })
         
     }
 }
